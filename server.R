@@ -2855,6 +2855,19 @@ dfprofile$durl <- c( paste0('<a href="', dfprofile$dtxlink, '" , target="_blank"
 
 dfprofile['dtxlink'] <- dfprofile['durl']
 
+observeEvent(input$type, {
+  if (input$type %in% c("BLOOD_CHEM", "HEMATOLOGY")) {
+    updateSelectInput(session, "tissue", selected = "BLOOD")
+  }
+})
+
+# When "BLOOD" is selected as tissue, set default type to "BLOOD_CHEM"
+observeEvent(input$tissue, {
+  if (input$tissue == "BLOOD") {
+    updateSelectInput(session, "type", selected = "BLOOD_CHEM")
+  }
+})
+
 output$table = DT::renderDataTable(
  DT::datatable({dfprofile
                 if (input$chemical != "All") {
