@@ -2855,16 +2855,23 @@ dfprofile$durl <- c( paste0('<a href="', dfprofile$dtxlink, '" , target="_blank"
 
 dfprofile['dtxlink'] <- dfprofile['durl']
 
-observeEvent(input$type, {
-  if (input$type %in% c("BLOOD_CHEM", "HEMATOLOGY")) {
-    updateSelectInput(session, "tissue", selected = "BLOOD")
-  }
-})
-
-# When "BLOOD" is selected as tissue, set default type to "BLOOD_CHEM"
 observeEvent(input$tissue, {
   if (input$tissue == "BLOOD") {
-    updateSelectInput(session, "type", selected = "BLOOD_CHEM")
+    updateSelectInput(session, "type",
+                      choices = c("BLOOD_CHEM", "HEMATOLOGY"),
+                      selected = "BLOOD_CHEM")
+  } else {
+    # Determine what types are relevant for the selected tissue
+    available_types <- unique(dfprofile$type[dfprofile$tissue == input$tissue])
+    
+    # Provide a fallback if no types match (just show all)
+    if (length(available_types) == 0) {
+      available_types <- unique(dfprofile$type)
+    }
+    
+    updateSelectInput(session, "type",
+                      choices = available_types,
+                      selected = available_types[1])
   }
 })
 
