@@ -849,10 +849,13 @@ shinyUI(fluidPage(
                                   selected = "LIVER")
                ),
                column(4,
+               #       selectInput("type",
+               #                   "type:",
+               #                   c("HISTOPATHOLOGY", "BLOOD_CHEM", "HEMATOLOGY", "ORGAN_WEIGHT"),
+               #                   selected = "HISTOPATHOLOGY")
                       selectInput("type",
                                   "type:",
-                                  c("HISTOPATHOLOGY", "BLOOD_CHEM", "HEMATOLOGY", "ORGAN_WEIGHT"),
-                                  selected = "HISTOPATHOLOGY")
+                                  choices = NULL)  # Let the server populate it
                ),
                column(4,
                       selectInput("vehicle",
